@@ -1,7 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
+using MediatR;
 using MicroRabbit.Banking.Data.Context;
 using MicroRabbit.Infra.IOC;
 using Microsoft.AspNetCore.Builder;
@@ -32,8 +34,9 @@ namespace MicroRabbit.Banking.Api
             services.AddDbContext<BankingDBContext>(options => 
             {
                 options.UseSqlite(Configuration.GetConnectionString("BankingDBConnection"),
-                b => b.MigrationsAssembly("CleanArch.Infra.Data"));
+                b => b.MigrationsAssembly("MicroRabbit.Banking.Data"));
             });
+            services.AddMediatR(typeof(Startup).GetTypeInfo().Assembly);
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
